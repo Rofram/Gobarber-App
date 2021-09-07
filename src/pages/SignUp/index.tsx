@@ -1,12 +1,12 @@
 import React, { useCallback, useRef, useContext } from "react";
 import Icon from 'react-native-vector-icons/Feather';
-import { 
-  Image, 
-  KeyboardAvoidingView, 
-  ScrollView, 
-  TextInput, 
-  View, 
-  Platform, 
+import {
+  Image,
+  KeyboardAvoidingView,
+  ScrollView,
+  TextInput,
+  View,
+  Platform,
   Alert
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -72,14 +72,14 @@ const SignUp = () => {
         Alert.alert('Erro na autenticação', 'Ocorreu um erro ao fazer login, cheque as credencias.');
       }
     },
-    [ formRef ],
+    [navigation],
   );
 
   return (
     <>
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding': undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ScrollView
           keyboardShouldPersistTaps="handled"
@@ -89,7 +89,7 @@ const SignUp = () => {
             <Image source={LogoImg} />
 
             <View>
-              <S.Title>Preencha os campos abaixo</S.Title> 
+              <S.Title>Preencha os campos abaixo</S.Title>
             </View>
 
             <Form
@@ -97,7 +97,7 @@ const SignUp = () => {
               ref={formRef}
               style={{ width: '100%' }}
             >
-              <Input 
+              <Input
                 autoCapitalize="words"
                 name="name"
                 icon="user"
@@ -107,7 +107,7 @@ const SignUp = () => {
                   emailInputRef.current?.focus();
                 }}
               />
-              <Input 
+              <Input
                 ref={emailInputRef}
                 keyboardType="email-address"
                 autoCompleteType="email"
@@ -119,7 +119,7 @@ const SignUp = () => {
                   passwordInputRef.current?.focus();
                 }}
               />
-              <Input 
+              <Input
                 ref={passwordInputRef}
                 secureTextEntry
                 name="password"
@@ -134,7 +134,7 @@ const SignUp = () => {
 
               <Button onPress={() => {
                 formRef.current?.submitForm()
-                }}>Criar conta</Button>
+              }}>Criar conta</Button>
             </Form>
 
           </S.Container>

@@ -1,18 +1,19 @@
 import React, { useCallback, useRef, useContext } from "react";
-import { 
-  Image, 
-  TextInput, 
-  KeyboardAvoidingView, 
-  ScrollView, 
-  View, 
-  Platform, 
-  Keyboard,
+import {
+  Image,
+  TextInput,
+  KeyboardAvoidingView,
+  ScrollView,
+  View,
+  Platform,
   Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 
 import { KeyboardContext } from '../../contexts/KeyboardContext';
+
+import { useAuth } from '../../hooks/Auth'
 
 import * as Yup from 'yup';
 import getValidationErrors from '../../utils/getValidationErrors';
@@ -26,6 +27,7 @@ import { Button } from '../../components/Button';
 import LogoImg from "../../assets/images/logo.png";
 
 import * as S from './styles';
+import api from "../../services/api";
 
 interface SignInFormData {
   email: string;
@@ -35,9 +37,11 @@ interface SignInFormData {
 const SignIn = () => {
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
-  const navigation = useNavigation();
   const { keyboardIsOpen } = useContext(KeyboardContext);
 
+  const navigation = useNavigation();
+
+  const { signIn } = useAuth();
 
   const handleSignIn = useCallback(
     async (data: SignInFormData) => {
@@ -53,12 +57,10 @@ const SignIn = () => {
           abortEarly: false,
         });
 
-        // await signIn({
-        //   email: data.email,
-        //   password: data.password,
-        // });
-
-        // history.push('/dashboard');
+        await signIn({
+          email: data.email,
+          password: data.password,
+        });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -70,12 +72,12 @@ const SignIn = () => {
         Alert.alert('Erro na autenticação', 'Ocorreu um erro ao fazer login, cheque as credencias.');
       }
     },
-    [ formRef ],
+    [signIn],
   );
 
   return (
     <>
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
@@ -95,7 +97,7 @@ const SignIn = () => {
               ref={formRef}
               style={{ width: '100%' }}
             >
-              <Input 
+              <Input
                 autoCorrect={false}
                 autoCapitalize="none"
                 keyboardType="email-address"
@@ -107,7 +109,7 @@ const SignIn = () => {
                   passwordInputRef.current?.focus();
                 }}
               />
-              <Input 
+              <Input
                 ref={passwordInputRef}
                 name="password"
                 icon="lock"
