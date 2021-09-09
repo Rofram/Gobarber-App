@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import Icon from 'react-native-vector-icons/Feather';
@@ -7,6 +7,9 @@ import { useAuth } from '../../hooks/Auth';
 import api from "../../services/api";
 
 import * as S from './styles';
+import GetAvatarImage from "../../utils/getAvatarImage";
+
+import avatar from '../../assets/images/avatar.png';
 
 export interface Provider {
   id: string;
@@ -45,7 +48,7 @@ const Dashboard = () => {
           <S.UserName>{user.name}</S.UserName>
         </S.HeaderTitle>
 
-        <S.ProfileButton onPress={navigateToProfile}>
+        <S.ProfileButton onPress={signOut}>
           <S.UserAvatar source={{ uri: user.avatar_url }} />
         </S.ProfileButton>
       </S.Header>
