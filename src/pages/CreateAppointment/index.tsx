@@ -130,6 +130,8 @@ const CreateAppointment = () => {
 
       navigate('AppointmentCreated', { date: date.getTime() });
     } catch (err) {
+      console.log(err);
+
       Alert.alert(
         'Erro ao criar agendamento',
         'Ocorreu um erro ao tentar criar o agendamento, tente novamente.'
