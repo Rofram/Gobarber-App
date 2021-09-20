@@ -7,9 +7,6 @@ import { useAuth } from '../../hooks/Auth';
 import api from "../../services/api";
 
 import * as S from './styles';
-import GetAvatarImage from "../../utils/getAvatarImage";
-
-import avatar from '../../assets/images/avatar.png';
 
 export interface Provider {
   id: string;
@@ -18,7 +15,7 @@ export interface Provider {
 }
 
 const Dashboard = () => {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const [providers, setProviders] = useState<Provider[]>([]);
 
   const { navigate } = useNavigation();
@@ -48,7 +45,7 @@ const Dashboard = () => {
           <S.UserName>{user.name}</S.UserName>
         </S.HeaderTitle>
 
-        <S.ProfileButton onPress={signOut}>
+        <S.ProfileButton onPress={navigateToProfile}>
           <S.UserAvatar source={{ uri: user.avatar_url }} />
         </S.ProfileButton>
       </S.Header>

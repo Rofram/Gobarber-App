@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useImperativeHandle, useCallback } from "react";
+import React, { useState, useEffect, useRef, useImperativeHandle, useCallback, forwardRef } from "react";
 import { TextInputProps } from "react-native";
 import { useField } from '@unform/core';
 
@@ -7,6 +7,7 @@ import * as S from './styles';
 type InputProps = TextInputProps & {
   name: string;
   icon: string;
+  containerStyle?: {};
 }
 
 type InputValueReference = {
@@ -17,7 +18,7 @@ type InputRef = {
   focus: () => void;
 }
 
-export const Input = React.forwardRef<InputRef, InputProps>(({ name, icon, ...props }, ref) => {
+export const Input = forwardRef<InputRef, InputProps>(({ name, icon, containerStyle = {}, ...props }, ref) => {
   const inputElementRef = useRef<any>(null);
 
   const { registerField, defaultValue = '', fieldName, error } = useField(name);
@@ -28,13 +29,13 @@ export const Input = React.forwardRef<InputRef, InputProps>(({ name, icon, ...pr
 
   const handleFocus = useCallback(() => {
     setFocused(true);
-  },[]);
+  }, []);
 
   const handleBlur = useCallback(() => {
     setFocused(false);
 
     setFiled(!!inputValueRef.current.value);
-  },[]);
+  }, []);
 
   useImperativeHandle(ref, () => ({
     focus: () => inputElementRef.current.focus(),
@@ -57,10 +58,10 @@ export const Input = React.forwardRef<InputRef, InputProps>(({ name, icon, ...pr
   }, [fieldName, inputValueRef, registerField]);
 
   return (
-    <S.Container isFocused={isFocused} isErrored={!!error}>
-      <S.Icon name={icon} size={20} color={isFocused ||isFiled ? "#ff9000" : "#666360"} />
+    <S.Container style={containerStyle} isFocused={isFocused} isErrored={!!error}>
+      <S.Icon name={icon} size={20} color={isFocused || isFiled ? "#ff9000" : "#666360"} />
 
-      <S.TextInput 
+      <S.TextInput
         ref={inputElementRef}
         keyboardAppearance="dark"
         placeholderTextColor="#666360"
